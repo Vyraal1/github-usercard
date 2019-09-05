@@ -22,6 +22,7 @@ axios
     console.log("Pulling the followers from " + response.data.followers_url);
     axios.get(response.data.followers_url).then(followers => {
       // the array is within the data field
+      console.log(followers);
       followers.data.forEach(follower => {
         //now its just an object with the inputs
         cardContainer.appendChild(createCard(follower));
@@ -107,6 +108,7 @@ axios
 function createCard(user) {
   // creating the elements
   const card = document.createElement("div");
+  const infoContainer = document.createElement("div");
   const img = document.createElement("img");
   const cardInfo = document.createElement("div");
   const name = document.createElement("h3");
@@ -135,9 +137,20 @@ function createCard(user) {
   following.textContent = `Following: ${user.following}`;
   bio.textContent = user.bio;
 
+  //calendar
+  const calendarWrapper = document.createElement("div");
+  const calendar = document.createElement("img");
+  calendar.setAttribute("src", `http://ghchart.rshah.org/${user.login}`);
+  calendar.style.display = "inline-block";
+
+  //styling
+  infoContainer.style.display = "flex";
+  calendar.style.width = "100%";
+
   // component structure
-  card.appendChild(img);
-  card.appendChild(cardInfo);
+  card.appendChild(infoContainer);
+  infoContainer.appendChild(img);
+  infoContainer.appendChild(cardInfo);
   cardInfo.appendChild(name);
   cardInfo.appendChild(name);
   cardInfo.appendChild(username);
@@ -147,6 +160,9 @@ function createCard(user) {
   cardInfo.appendChild(followers);
   cardInfo.appendChild(following);
   cardInfo.appendChild(bio);
+
+  card.appendChild(calendarWrapper);
+  calendarWrapper.appendChild(calendar);
 
   return card;
 }
